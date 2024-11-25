@@ -2,6 +2,9 @@
  <img src="assets/logo.svg" alt="OmniAI Logo" width="400"/>
 </p>
 
+> [!IMPORTANT]  
+> This project is currently in a very early development and experimental stage.
+
 OmniAI provides implementations of foundational AI algorithms from first principles. Built for learning, understanding, and mastering the core concepts of artificial intelligence and machine learning.
 
 ## 🌟 Architecture Overview
