@@ -1,9 +1,9 @@
 """
 Goal: This file contains the Linear Regression model.
 Context: Linear Regression has the following form of f(x) = w_0+w_1x_1+...+w_nx_n, which
-can be writte as f(x) = Y = Xw + w_0 (or you can merge the bias into the w). Using
-calculus, this model has the objective function of mean squared error (MSE), which
-when minimised, gives us the optimal model parameters (via the normal equations).
+can be written in matrix notation as f(x) = Y = Xw + w_0 (or you can merge the bias into
+the w). Using calculus, this model has the objective function of mean squared error (MSE)
+, which when minimised, gives us the optimal model parameters (via the normal equations).
 Similarly, when using statistics and modelling the feature set as a Gaussian
 distribution, the objective function is the negative log likelihood (NLL), which when
 minimised, is equivalent to minimising the MSE.
@@ -32,12 +32,12 @@ class LinearRegression(DiscriminativeModel):
             input_dim: Number of input features
             fit_intercept: Whether to include bias term
         """
-        super().__init__()  # This initializes self._is_fitted to False
+        super().__init__()
         self.input_dim = input_dim
         self.fit_intercept = fit_intercept
 
         # Initialize parameters using Pydantic model
-        self.weights = Parameter(data=np.zeros(input_dim))
+        self.weights = Parameter(data=np.random.randn(input_dim) * np.sqrt(1/input_dim))
         self.bias = Parameter(data=np.zeros(1)) if fit_intercept else None
 
         # Training history
@@ -59,16 +59,16 @@ class LinearRegression(DiscriminativeModel):
             Model predictions of shape (n_samples,)
 
         Raises:
-            ValueError: If model is not fitted or weights are not initialized
+            ValueError: If weights are not initialized
         """
-        if not self._is_fitted:
-            raise ValueError("Model must be fitted before making predictions")
         if self.weights.data is None:
             raise ValueError("Model parameters not initialized")
 
         output = X @ self.weights.data
         if self.bias is not None:
             output += self.bias.data
+
+        self._is_fitted = True
         return output
 
     def backward(self, X: np.ndarray, grad_output: np.ndarray) -> None:
@@ -84,10 +84,10 @@ class LinearRegression(DiscriminativeModel):
         # Average over batch dimension for proper scaling
         batch_size = len(X)
 
-        # Compute gradients for weights (∂L/∂w = X.T @ grad_output / batch_size)
+        # Compute gradients for weights (∂L/∂w = ∂L/∂ŷ × ∂ŷ/∂w)
         self.weights.grad = X.T @ grad_output / batch_size
 
-        # Compute gradients for bias (∂L/∂b = mean(grad_output))
+        # Compute gradients for bias (∂L/∂b = ∂L/∂ŷ × ∂ŷ/∂b)
         if self.bias is not None:
             self.bias.grad = np.mean(grad_output, keepdims=True)
 
@@ -129,7 +129,6 @@ class LinearRegression(DiscriminativeModel):
 
         # Mark model as fitted
         self._is_fitted = True
-        return self
 
     def predict(self, X: np.ndarray) -> np.ndarray:
         """Make predictions for given features.
@@ -159,25 +158,25 @@ class LinearRegression(DiscriminativeModel):
         return X
 
     @property
-    def coef_(self) -> np.ndarray:
+    def _coef(self) -> np.ndarray:
         """Get model coefficients.
 
         Raises:
             ValueError: If model is not fitted
         """
         if not self._is_fitted:
-            raise ValueError("Model must be fitted before accessing coefficients")
+            raise ValueError("Model must be fitted before accessing coefficients!")
         return self.weights.data
 
     @property
-    def intercept_(self) -> Optional[float]:
+    def _intercept(self) -> Optional[float]:
         """Get model intercept.
 
         Raises:
             ValueError: If model is not fitted
         """
         if not self._is_fitted:
-            raise ValueError("Model must be fitted before accessing intercept")
+            raise ValueError("Model must be fitted before accessing intercept!")
         if self.bias is not None:
             return float(self.bias.data[0])
         return None

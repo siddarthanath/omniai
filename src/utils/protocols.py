@@ -8,12 +8,13 @@ function will know its signature (regardless of the type of model it is).
 
 # ------------------------------------------------------------------------------------ #
 # Standard Library
-from typing import Protocol
+from typing import Protocol, ClassVar
 
 # Third Party
 import numpy as np
 
 # Private
+from src.utils.enums import MLTaskType
 # ------------------------------------------------------------------------------------ #
 
 
@@ -32,6 +33,8 @@ class Model(Protocol):
 
 class LossFunction(Protocol):
     """Protocol for loss functions."""
+
+    ml_task: ClassVar[MLTaskType]
 
     def __call__(self, y_pred: np.ndarray, y_true: np.ndarray) -> float:
         ...

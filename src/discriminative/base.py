@@ -21,7 +21,7 @@ class DiscriminativeModel(ABC):
     """Base class for all discriminative models."""
 
     def __init__(self) -> None:
-        self.is_fitted = False
+        self._is_fitted = False
 
     @abstractmethod
     def fit(self, X: np.ndarray, y: np.ndarray) -> "DiscriminativeModel":

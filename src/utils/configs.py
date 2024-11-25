@@ -1,6 +1,7 @@
 """
-Goal: This file contains the configurations for optimisation algorithms.
-Context: Discriminative models learn P(y|x) directly.
+Goal: This file contains the configurations for optimisation algorithms. Most of these
+will be pydantic models.
+Context: The pydantic models will ensure users know how to setup their own models.
 """
 
 # ------------------------------------------------------------------------------------ #
@@ -61,11 +62,11 @@ class TrainerConfig(BaseModel):
 
 
 # ------------------------------------------------------------------------------------ #
-ConfigT = TypeVar("ConfigT", bound="BaseOptimizerConfig")
+ConfigT = TypeVar("ConfigT", bound="BaseOptimiserConfig")
 
 
-class BaseOptimizerConfig(Protocol):
-    """Protocol for optimizer configs."""
+class BaseOptimiserConfig(BaseModel):
+    """Generic attribute in all optimiser configs."""
 
     lr: float
 
@@ -73,8 +74,8 @@ class BaseOptimizerConfig(Protocol):
 # ------------------------------------------------------------------------------------ #
 
 
-class GDConfig(BaseModel):
+class GDConfig(BaseOptimiserConfig):
     """Gradient Descent configuration."""
 
     lr: float = Field(gt=0, default=0.01, description="Learning rate")
-    optimizer_type: Literal["gd"] = "gd"
+    optimiser_type: Literal["gd"] = "gd"

@@ -1,6 +1,7 @@
 """
 Goal: This file contains the Trainer algorithm used across all models.
-Context: The main focus of this Trainer is for Gradient Based optimisation.
+Context: The main focus of this Trainer is for Gradient Based optimisation. This allows
+for any model to be train, if an analytical solution does not exist.
 """
 
 # ------------------------------------------------------------------------------------ #
@@ -12,7 +13,7 @@ import numpy as np
 # Private
 from src.optimisers.base import Optimiser
 from src.utils.configs import TrainerConfig
-from src.utils.protocols import Model
+from src.utils.protocols import Model, LossFunction
 
 # ------------------------------------------------------------------------------------ #
 
@@ -29,8 +30,8 @@ class Trainer:
         model: Model,
         X: np.ndarray,
         y: np.ndarray,
-        optimiser: Optimiser,  # Now using our ABC Optimizer
-        loss_fn: ...,
+        optimiser: Optimiser,
+        loss_fn: LossFunction,
     ):
         """Train a model using Gradient-Based optimisation.
 
@@ -38,7 +39,8 @@ class Trainer:
             model (Model): Any machine learning model.
             X (np.ndarray): Feature set.
             y (np.ndarray): Target set.
-            optimizer (Optimizer): The optimiser.
+            optimiser (Optimiser): The optimiser.
+            loss_fn (LossFunction): The loss function.
 
         Returns:
             list[float]: _description_
@@ -53,9 +55,8 @@ class Trainer:
                 if self.config.shuffle
                 else np.arange(n_samples)
             )
-            # Store loss
+            # Mini-Batch
             total_loss = 0.0
-            # Batch training
             for start_idx in range(0, n_samples, self.config.batch_size):
                 # Obtain batches
                 batch_idx = indices[start_idx : start_idx + self.config.batch_size]
@@ -64,12 +65,12 @@ class Trainer:
                     model=model,
                     X=X[batch_idx],
                     y=y[batch_idx],
-                    optimizer=optimiser,
+                    optimiser=optimiser,
                     loss_fn=loss_fn,
                 )
                 # Obtain cumulative loss
                 total_loss += loss * len(batch_idx)
-            # Calculate average
+            # Calculate average loss
             avg_loss = total_loss / n_samples
             # Store loss
             self.loss_history.append(avg_loss)
@@ -84,8 +85,8 @@ class Trainer:
         model: Model,
         X: np.ndarray,
         y: np.ndarray,
-        optimizer: Optimiser,  # Using our ABC Optimizer
-        loss_fn: ...,
+        optimiser: Optimiser,
+        loss_fn: LossFunction,
     ) -> float:
         """Apply training step.
 
@@ -93,13 +94,14 @@ class Trainer:
             model (Model): Any machine learning model.
             X (np.ndarray): Feature set.
             y (np.ndarray): Target set.
-            optimizer (Optimizer): The optimiser
+            optimiser (Optimiser): The optimiser.
+            loss_fn (LossFunction): The loss function.
 
         Returns:
             float: The loss for the specific batch.
         """
         # Clear gradients
-        optimizer.zero_grad()
+        optimiser.zero_grad()
         # Activate a full model pass (from input to output)
         y_pred = model.forward(X)
         # Calculate loss
@@ -108,5 +110,5 @@ class Trainer:
         grad_output = loss_fn.backward(y_pred, y)
         model.backward(X, grad_output)
         # Update model parameters
-        optimizer.step()
+        optimiser.step()
         return loss
