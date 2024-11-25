@@ -2,9 +2,6 @@
  <img src="assets/logo.svg" alt="OmniAI Logo" width="400"/>
 </p>
 
-# IMPORTANT❗
-> This project is under maintenance and as such, some files may not run. This will be fixed in due course.
-
 OmniAI provides implementations of foundational AI algorithms from first principles. Built for learning, understanding, and mastering the core concepts of artificial intelligence and machine learning.
 
 ## 🌟 Architecture Overview
