@@ -7,11 +7,11 @@
 
 OmniAI provides implementations of foundational AI algorithms from first principles. Built for learning, understanding, and mastering the core concepts of artificial intelligence and machine learning.
 
-## 🌟 Architecture Overview
+## Architecture Overview 🌟
 
 This repository implements AI algorithms from ground up, focusing on both theoretical foundations and practical implementations. The codebase follows familiar scikit-learn and PyTorch patterns while exposing the underlying mechanics.
 
-## 🗺️ AI Taxonomy
+## AI Taxonomy 🗺️
 
 ```mermaid
 graph LR
@@ -56,7 +56,7 @@ class ML,DL,RL mlNode
 class ES_DESC,SEARCH_DESC,SL_DESC,UL_DESC,SSL_DESC,DL_DESC,RL_DESC descNode
 ```
 
-## 🎯 Core Objectives
+## Core Objectives 🎯
 
 ### Educational Foundation
 - Master mathematical foundations through probabilistic and calculus-based approaches
@@ -66,7 +66,7 @@ class ES_DESC,SEARCH_DESC,SL_DESC,UL_DESC,SSL_DESC,DL_DESC,RL_DESC descNode
 
 ### Technical Mastery
 - Debug complex models through deep understanding of internals
-- Optimize implementations for specific use cases
+- Optimise implementations for specific use cases
 - Identify and resolve performance bottlenecks
 - Make informed architectural decisions
 
@@ -76,7 +76,7 @@ class ES_DESC,SEARCH_DESC,SL_DESC,UL_DESC,SSL_DESC,DL_DESC,RL_DESC descNode
 - Learn model limitations and assumptions
 - Develop robust debugging strategies
 
-## 🛠️ Implementation Philosophy
+## Implementation Philosophy 🛠️
 
 While powerful libraries like scikit-learn, PyTorch, and TensorFlow exist, implementing from scratch provides:
 - Deep understanding of hyperparameter impacts
@@ -85,44 +85,62 @@ While powerful libraries like scikit-learn, PyTorch, and TensorFlow exist, imple
 - Clear architectural decision-making capability
 
 Most of the implementations will take a blend of scikit-learn and PyTorch form.
-## 🧮 Mathematical Approaches
 
-### Probabilistic Methods
-- Foundation: Bayes' Theorem and probability theory
+## Mathematical Approaches 🧮 
+We aim to provide both analytical/statistical and optimisation solutions for each model. 
+
+### Discriminative Methods
+- Foundation: Modelling $P\left(\underline{\textbf{y}}|\underline{\textbf{x}}\right)$, where $\underline{\textbf{x}}$ follows a specified data distribution.
 
    Implementations:
-    - Naive Bayes using P(y|X)
+    - Linear Regression
     - Gaussian Mixture Models
     - Hidden Markov Models
 
+### Generative Methods
+- Foundation: Modelling $P\left(\underline{\textbf{x}}, \underline{\textbf{y}}\right)=P\left(\underline{\textbf{x}}\right)P\left(\underline{\textbf{x}}|	\underline{\textbf{y}}\right)$.
+
+   Implementations:
+    - AutoEncoder
+    - GANs
+    - Transformers
+
 ### Optimisation Methods
-- Foundation: Calculus and gradient descent
+- Foundation: Modelling minimisation through analytical and heuristic optimisation algorithms.
    
    Implementations:
-    - Linear Regression with MSE optimisation
+    - Linear Regression with MSE optimisation (equivalent to NLL optimisation)
     - Neural Networks with backpropagation
     - Support Vector Machines with margin maximisation
 
-We will also aim to demonstrate the connection between these two approaches in order to build
-a unified interface.
-## 🚀 Getting Started
+## Getting Started 🚀 
 Using this library could never be easier:
 1. Instantiate a model.
-2. Instantiate a trainer, with a compatible integration of optimiser and config.
+2. Instantiate a trainer, with a compatible integration of optimiser and its' config.
 3. Instantiate a suitable loss function.
+4. Start training!
 
-Once set, get training!
-```bash
+```python
+# Instantiate model
 model = LinearRegression(input_dim=1)
-optimiser = GradientOptimiser(model.parameters(), config=GradientDescentConfig(lr=0.1))
-config = GradientTrainerConfig(batch_size=32, epochs=100)
-trainer = GradientTrainer(config=config, optimiser=optimiser)
-trainer.train(model=model, X=X, y=y, loss_fn=MSELoss())
+# Instantiate config for optimiser
+optimiser_config = GradientDescentConfig(lr=0.1)
+# Instantiate optimiser
+optimiser = GradientOptimiser(model.parameters(), config=optimiser_config)
+# Instantiate config for trainer
+trainer_config = GradientTrainerConfig(batch_size=32, epochs=100)
+# Instantiate trainer
+trainer = GradientTrainer(config=trainer_config, optimiser=optimiser)
+# Instantiate loss function
+loss_fn = MSELoss()
+# Train model!
+trainer.train(model=model, X=X, y=y, loss_fn=loss_fn)
 ```
 Note that some models have an analytical solution to find their optimal parameters - in this case, training is not necessary.
-## 📖 Documentation
+## Documentation 📖
 
 Detailed documentation available in the `/docs` directory:
+- Library architecture
 - Algorithm implementations
 - Mathematical derivations
 - Usage examples
