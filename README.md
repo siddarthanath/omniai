@@ -2,8 +2,8 @@
  <img src="assets/logo.svg" alt="OmniAI Logo" width="400"/>
 </p>
 
-# IMPORTANT❗
-> This project is under maintenance and as such, some files may not run. This will be fixed in due course.
+> [!IMPORTANT]  
+> This project is currently in a very early development and experimental stage.
 
 OmniAI provides implementations of foundational AI algorithms from first principles. Built for learning, understanding, and mastering the core concepts of artificial intelligence and machine learning.
 
@@ -46,10 +46,10 @@ RL --> RL_DESC[["Input: Environment states<br>Output: Actions/Policy<br>Goal: Le
 DL <--> RL
 
 %% Styling
-classDef default fill:#f9f9f9,stroke:#333,stroke-width:2px
-classDef aiNode fill:#e3f2fd,stroke:#1565c0,stroke-width:4px
-classDef mlNode fill:#e8f5e9,stroke:#2e7d32,stroke-width:3px
-classDef descNode fill:#f5f5f5,stroke:#666,stroke-width:1px
+classDef default fill:#f9f9f9,stroke:#333,stroke-width:2px,color:#000
+classDef aiNode fill:#e3f2fd,stroke:#1565c0,stroke-width:4px,color:#000
+classDef mlNode fill:#e8f5e9,stroke:#2e7d32,stroke-width:3px,color:#000
+classDef descNode fill:#f5f5f5,stroke:#666,stroke-width:1px,color:#000
 
 class AI aiNode
 class ML,DL,RL mlNode
@@ -89,17 +89,19 @@ Most of the implementations will take a blend of scikit-learn and PyTorch form.
 
 ### Probabilistic Methods
 - Foundation: Bayes' Theorem and probability theory
-- Implementations:
- - Naive Bayes using P(y|X)
- - Gaussian Mixture Models
- - Hidden Markov Models
+
+   Implementations:
+    - Naive Bayes using P(y|X)
+    - Gaussian Mixture Models
+    - Hidden Markov Models
 
 ### Optimisation Methods
 - Foundation: Calculus and gradient descent
-- Implementations:
- - Linear Regression with MSE optimisation
- - Neural Networks with backpropagation
- - Support Vector Machines with margin maximisation
+   
+   Implementations:
+    - Linear Regression with MSE optimisation
+    - Neural Networks with backpropagation
+    - Support Vector Machines with margin maximisation
 
 We will also aim to demonstrate the connection between these two approaches in order to build
 a unified interface.
