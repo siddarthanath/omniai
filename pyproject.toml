@@ -14,7 +14,8 @@ dependencies = [
     "plotly==5.24.1",
     "pydantic==1.10.0",
     "jupyter==1.1.1",
-    "ipykernel==6.29.5"
+    "ipykernel==6.29.5",
+    "black==24.10.0"
 ]
 
 [build-system]

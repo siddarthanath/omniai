@@ -3,7 +3,7 @@ Goal: This file contains the base class for Discriminative models.
 Context: Discriminative models learn P(y|x) directly.
 """
 
-# ------------------------------------------------------------------------------------ #
+# -------------------------------------------------------------------------------------------------------------------- #
 # Standard Library
 
 # Third Party
@@ -14,7 +14,7 @@ import numpy as np
 # Private
 
 
-# ------------------------------------------------------------------------------------ #
+# -------------------------------------------------------------------------------------------------------------------- #
 
 
 class DiscriminativeModel(ABC):
@@ -24,7 +24,7 @@ class DiscriminativeModel(ABC):
         self._is_fitted = False
 
     @abstractmethod
-    def fit(self, X: np.ndarray, y: np.ndarray) -> "DiscriminativeModel":
+    def fit(self, X: np.ndarray, y: np.ndarray):
         """Fit the model to training data.
 
         Args:
@@ -34,7 +34,7 @@ class DiscriminativeModel(ABC):
         Returns:
             self: The fitted model
         """
-        pass
+        raise NotImplementedError("All subclasses must implement this method!")
 
     @abstractmethod
     def predict(self, X: np.ndarray) -> np.ndarray:
@@ -46,7 +46,7 @@ class DiscriminativeModel(ABC):
         Returns:
             predictions: Model predictions
         """
-        pass
+        raise NotImplementedError("All subclasses must implement this method!")
 
     def score(self, X: np.ndarray, y: np.ndarray) -> float:
         """Calculate model score on given data.

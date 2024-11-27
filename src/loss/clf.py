@@ -3,7 +3,7 @@ Goal: This file contains the loss functions for classification problems.
 Context: Classification problems have a discrete target within the loss function.
 """
 
-# ------------------------------------------------------------------------------------ #
+# -------------------------------------------------------------------------------------------------------------------- #
 # Standard Library
 from typing import ClassVar
 
@@ -14,7 +14,7 @@ import numpy as np
 from src.utils.enums import MLTaskType
 
 
-# ------------------------------------------------------------------------------------ #
+# -------------------------------------------------------------------------------------------------------------------- #
 class CrossEntropyLoss:
     ml_task: ClassVar[MLTaskType] = MLTaskType.CLASSIFICATION
 
@@ -26,7 +26,9 @@ class CrossEntropyLoss:
         y_pred_safe = np.clip(y_pred, self.eps, 1 - self.eps)
         # Binary case
         if y_pred.ndim == 1:
-            return -np.mean(y_true * np.log(y_pred_safe) + (1 - y_true) * np.log(1 - y_pred_safe))
+            return -np.mean(
+                y_true * np.log(y_pred_safe) + (1 - y_true) * np.log(1 - y_pred_safe)
+            )
         # Multi-class case
         else:
             return -np.mean(np.sum(y_true * np.log(y_pred_safe), axis=1))
@@ -35,8 +37,9 @@ class CrossEntropyLoss:
         y_pred_safe = np.clip(y_pred, self.eps, 1 - self.eps)
         # Binary case
         if y_pred.ndim == 1:
-            return ((y_pred_safe - y_true) /
-                    (y_pred_safe * (1 - y_pred_safe))) / len(y_pred)
+            return ((y_pred_safe - y_true) / (y_pred_safe * (1 - y_pred_safe))) / len(
+                y_pred
+            )
         # Multi-class case
         else:
             return -y_true / y_pred_safe / len(y_pred)

@@ -1,15 +1,13 @@
 """
 Goal: This file contains the Linear Regression model.
-Context: Linear Regression has the following form of f(x) = w_0+w_1x_1+...+w_nx_n, which
-can be written in matrix notation as f(x) = Y = Xw + w_0 (or you can merge the bias into
-the w). Using calculus, this model has the objective function of mean squared error (MSE)
-, which when minimised, gives us the optimal model parameters (via the normal equations).
-Similarly, when using statistics and modelling the feature set as a Gaussian
-distribution, the objective function is the negative log likelihood (NLL), which when
-minimised, is equivalent to minimising the MSE.
+Context: Linear Regression has the following form of f(x) = w_0+w_1x_1+...+w_nx_n, which can be written in matrix
+notation as f(x) = Y = Xw + w_0 (or you can merge the bias into the w). Using calculus, this model has the objective
+function of mean squared error (MSE), which when minimised, gives us the optimal model parameters (via the normal
+equations). Similarly, when using statistics and modelling the feature set as a Gaussian distribution, the objective
+function is the negative log likelihood (NLL), which when minimised, is equivalent to minimising the MSE.
 """
 
-# ------------------------------------------------------------------------------------ #
+# -------------------------------------------------------------------------------------------------------------------- #
 # Standard Library
 from typing import Optional
 
@@ -18,26 +16,36 @@ import numpy as np
 
 # Private
 from src.discriminative.base import DiscriminativeModel
-from src.utils.configs import Parameter
+from optimisers.analytical.configs import Parameter
 
 
-# ------------------------------------------------------------------------------------ #
+# -------------------------------------------------------------------------------------------------------------------- #
 class LinearRegression(DiscriminativeModel):
     """Linear Regression model with both analytical and gradient-based solutions."""
 
     def __init__(self, input_dim: int, fit_intercept: bool = True):
-        """Initialize LinearRegression model.
+        """Initialise LinearRegression model.
+
+        This implementation separates the bias/off term from the weights of the model. This makes it easier to
+        understanding the statistical properties of the maximum likelihood estimators (MLEs).
+
+        Note:
+            1. Alternatively, one could increment input_dim by 1 and set fit_intercept to be False. Then, apply
+            self._add_intercept (which then combines all the weights into a single vector) and then execute model.
+            2. If using the GaussianNLL loss function, remember to standardise the input data before model execution.
 
         Args:
-            input_dim: Number of input features
-            fit_intercept: Whether to include bias term
+            input_dim: Number of input features.
+            fit_intercept: Whether to include bias term.
         """
         super().__init__()
         self.input_dim = input_dim
         self.fit_intercept = fit_intercept
 
         # Initialize parameters using Pydantic model
-        self.weights = Parameter(data=np.random.randn(input_dim) * np.sqrt(1/input_dim))
+        self.weights = Parameter(
+            data=np.random.randn(input_dim) * np.sqrt(1 / input_dim)
+        )
         self.bias = Parameter(data=np.zeros(1)) if fit_intercept else None
 
         # Training history
@@ -91,7 +99,7 @@ class LinearRegression(DiscriminativeModel):
         if self.bias is not None:
             self.bias.grad = np.mean(grad_output, keepdims=True)
 
-    def fit(self, X: np.ndarray, y: np.ndarray) -> "LinearRegression":
+    def fit(self, X: np.ndarray, y: np.ndarray):
         """Fit model using analytical solution (normal equation).
 
         Args:

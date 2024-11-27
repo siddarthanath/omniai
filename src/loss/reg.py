@@ -9,6 +9,7 @@ from typing import ClassVar
 
 # Third Party
 import numpy as np
+
 # Private
 from src.utils.enums import MLTaskType
 
@@ -24,4 +25,4 @@ class MSELoss:
     @staticmethod
     def backward(y_pred: np.ndarray, y_true: np.ndarray) -> np.ndarray:
         """Derivative of MSE."""
-        return - (2 / len(y_pred)) * (y_true - y_pred)
+        return -(2 / len(y_pred)) * (y_true - y_pred)
