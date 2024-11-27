@@ -30,11 +30,11 @@ class GradientTrainer(BaseTrainer[GradientOptimiser]):
         self.optimiser = optimiser
 
     def train(
-            self,
-            model: GradientModel,
-            X: np.ndarray,
-            y: np.ndarray,
-            loss_fn: LossFunction,
+        self,
+        model: GradientModel,
+        X: np.ndarray,
+        y: np.ndarray,
+        loss_fn: LossFunction,
     ):
         """Train a model using Gradient-Based optimisation.
 
@@ -61,7 +61,7 @@ class GradientTrainer(BaseTrainer[GradientOptimiser]):
             total_loss = 0.0
             for start_idx in range(0, n_samples, self.config.batch_size):
                 # Obtain batches
-                batch_idx = indices[start_idx: start_idx + self.config.batch_size]
+                batch_idx = indices[start_idx : start_idx + self.config.batch_size]
                 # Train over batches and retrieve loss
                 loss = self._train_batch(
                     model=model,
@@ -82,11 +82,11 @@ class GradientTrainer(BaseTrainer[GradientOptimiser]):
             # @TODO: Add convergence criterion i.e., early stopping.
 
     def _train_batch(
-            self,
-            model: GradientModel,
-            X: np.ndarray,
-            y: np.ndarray,
-            loss_fn: LossFunction,
+        self,
+        model: GradientModel,
+        X: np.ndarray,
+        y: np.ndarray,
+        loss_fn: LossFunction,
     ) -> float:
         """Apply training step.
 

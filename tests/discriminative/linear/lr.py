@@ -98,7 +98,9 @@ def test_lr_3d(test_case, X_fn, add_noise):
 
     # Act
     model = LinearRegression(input_dim=2)
-    optimiser = GradientOptimiser(model.parameters(), config=GradientDescentConfig(lr=0.1))
+    optimiser = GradientOptimiser(
+        model.parameters(), config=GradientDescentConfig(lr=0.1)
+    )
     config = GradientTrainerConfig(batch_size=32, epochs=100)
     trainer = GradientTrainer(config=config, optimiser=optimiser)
     trainer.train(model=model, X=X_standardized, y=y, loss_fn=MSELoss())

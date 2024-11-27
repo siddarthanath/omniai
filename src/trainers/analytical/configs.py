@@ -19,6 +19,7 @@ TrainerConfigT = TypeVar("TrainerConfigT")
 
 class BaseTrainerConfig(BaseModel):
     """Base configuration for all trainers."""
+
     pass
 
 
