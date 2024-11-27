@@ -106,11 +106,20 @@ Most of the implementations will take a blend of scikit-learn and PyTorch form.
 We will also aim to demonstrate the connection between these two approaches in order to build
 a unified interface.
 ## 🚀 Getting Started
+Using this library could never be easier:
+1. Instantiate a model.
+2. Instantiate a trainer, with a compatible integration of optimiser and config.
+3. Instantiate a suitable loss function.
 
+Once set, get training!
 ```bash
-TBC...
+model = LinearRegression(input_dim=1)
+optimiser = GradientOptimiser(model.parameters(), config=GradientDescentConfig(lr=0.1))
+config = GradientTrainerConfig(batch_size=32, epochs=100)
+trainer = GradientTrainer(config=config, optimiser=optimiser)
+trainer.train(model=model, X=X, y=y, loss_fn=MSELoss())
 ```
-
+Note that some models have an analytical solution to find their optimal parameters - in this case, training is not necessary.
 ## 📖 Documentation
 
 Detailed documentation available in the `/docs` directory:
