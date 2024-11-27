@@ -45,14 +45,14 @@ graph TD
     AG --> |uses| AGC
     BO1 --> |uses| BAC
     GA --> |uses| GAC
-
+    
     %% Styling
-    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px
-    classDef base fill:#e1f5fe,stroke:#01579b,stroke-width:2px
-    classDef implement fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
-    classDef config fill:#fce4ec,stroke:#880e4f,stroke-width:2px
-    classDef enum fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    classDef typevar fill:#fff3e0,stroke:#e65100,stroke-width:1px,stroke-dasharray: 5 5
+    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px,color:#000
+    classDef base fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef implement fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#000
+    classDef config fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef enum fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef typevar fill:#fff3e0,stroke:#e65100,stroke-width:1px,stroke-dasharray: 5 5,color:#000
     
     class BP,BT,BO base
     class GD,AG,BO1,GA implement
