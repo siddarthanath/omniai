@@ -30,8 +30,9 @@ class LinearRegression(DiscriminativeModel):
         understanding the statistical properties of the maximum likelihood estimators (MLEs).
 
         Note:
-            1. Alternatively, one could increment input_dim by 1 and set fit_intercept to be False. Then, apply
-            self._add_intercept (which then combines all the weights into a single vector) and then execute model.
+            1. Alternatively, one could increment input_dim by 1 more than the number of features in X and set
+            fit_intercept to be False. Then, apply self._add_intercept (which then combines all the weights into a
+            single vector) and then execute model.
             2. If using the GaussianNLL loss function, remember to standardise the input data before model execution.
 
         Args:
@@ -53,9 +54,11 @@ class LinearRegression(DiscriminativeModel):
 
     def parameters(self) -> list[Parameter]:
         """Get all trainable parameters."""
+        params = [self.weights]
         if self.bias is not None:
-            return [self.weights, self.bias]
-        return [self.weights]
+            params += [self.bias]
+
+        return params
 
     def forward(self, X: np.ndarray) -> np.ndarray:
         """Forward pass of the model.
@@ -67,7 +70,7 @@ class LinearRegression(DiscriminativeModel):
             Model predictions of shape (n_samples,)
 
         Raises:
-            ValueError: If weights are not initialized
+            ValueError: If weights are not initialized.
         """
         if self.weights.data is None:
             raise ValueError("Model parameters not initialized")
@@ -76,7 +79,6 @@ class LinearRegression(DiscriminativeModel):
         if self.bias is not None:
             output += self.bias.data
 
-        self._is_fitted = True
         return output
 
     def backward(self, X: np.ndarray, grad_output: np.ndarray) -> None:
@@ -92,12 +94,14 @@ class LinearRegression(DiscriminativeModel):
         # Average over batch dimension for proper scaling
         batch_size = len(X)
 
-        # Compute gradients for weights (∂L/∂w = ∂L/∂ŷ × ∂ŷ/∂w)
+        # Compute gradients for weights (∂L/∂w = ∂L/∂ŷ × ∂ŷ/∂w =  ∂L/∂ŷ @ X^T)
         self.weights.grad = X.T @ grad_output / batch_size
 
-        # Compute gradients for bias (∂L/∂b = ∂L/∂ŷ × ∂ŷ/∂b)
+        # Compute gradients for bias (∂L/∂b = ∂L/∂ŷ × ∂ŷ/∂b = ∂L/∂ŷ @ 1)
         if self.bias is not None:
             self.bias.grad = np.mean(grad_output, keepdims=True)
+
+        self._is_fitted = True
 
     def fit(self, X: np.ndarray, y: np.ndarray):
         """Fit model using analytical solution (normal equation).
